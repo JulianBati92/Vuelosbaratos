@@ -1,0 +1,13 @@
+# Node dependencies
+node_modules/
+**/node_modules/
+# Build output
+dist/
+**/dist/
+# Logs
+npm-debug.log*
+# Env files
+.env
+# lock files
+package-lock.json
+yarn.lock

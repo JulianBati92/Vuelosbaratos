@@ -7,7 +7,7 @@ export default function Buscador() {
 
   const handleBuscar = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/buscar', {
+    const res = await fetch('https://vuelosbaratos.onrender.com/api/buscar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ consulta }),

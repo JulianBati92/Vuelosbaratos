@@ -4,16 +4,25 @@ import Resultados from './Resultados';
 export default function Buscador() {
   const [consulta, setConsulta] = useState('');
   const [resultados, setResultados] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleBuscar = async (e) => {
     e.preventDefault();
-    const res = await fetch('https://vuelosbaratos.onrender.com/api/buscar', {
+    const baseUrl = import.meta.env.VITE_BACKEND_URL || '';
+    const res = await fetch(`${baseUrl}/api/buscar`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ consulta }),
     });
-    const data = await res.json();
-    setResultados(data);
+    if (res.ok) {
+      const data = await res.json();
+      setResultados(data);
+      setError(null);
+    } else {
+      const errText = await res.text();
+      setError(errText || 'Error al buscar');
+      setResultados(null);
+    }
   };
 
   return (
@@ -30,6 +39,9 @@ export default function Buscador() {
           Buscar
         </button>
       </form>
+      {error && (
+        <p className="text-red-600 mt-2">{error}</p>
+      )}
       {resultados && <Resultados data={resultados} />}
     </>
   );

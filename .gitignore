@@ -8,6 +8,7 @@ dist/
 npm-debug.log*
 # Env files
 .env
+**/.env
 # lock files
 package-lock.json
 yarn.lock

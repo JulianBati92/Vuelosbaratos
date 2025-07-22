@@ -1,0 +1,1 @@
+// buscar.js route

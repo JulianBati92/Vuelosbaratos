@@ -26,6 +26,14 @@ npm run dev
 
 El frontend está configurado para proxy `/api` hacia `http://localhost:4000`.
 
+## Ejecución en producción
+
+Compila el frontend y luego inicia el servidor con Node en modo producción:
+
+```bash
+npm run start:build
+```
+
 ## Despliegue en Vercel
 Vercel usará el archivo `vercel.json` para construir el frontend con Vite y las
 funciones de la carpeta `api`. Ejecuta `npm install` y luego `npm run build` para

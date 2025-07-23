@@ -10,6 +10,20 @@ Copiar
 Editar
 # Instala todas las dependencias (frontend y backend)
 npm install
+
+Configuración
+------------
+El backend puede enviar notificaciones por WhatsApp usando Twilio. Para habilitar
+esta función definí las siguientes variables de entorno antes de iniciar el
+servidor:
+
+```
+TWILIO_ACCOUNT_SID=<tu cuenta>
+TWILIO_AUTH_TOKEN=<tu token>
+TWILIO_FROM=whatsapp:+14155238886
+TWILIO_TO=whatsapp:+549XXXXXXXXX
+```
+Si no configurás estas variables, los mensajes se mostrarán por consola.
 Desarrollo
 Para ejecutar en modo desarrollo es necesario correr el backend y el frontend por separado:
 

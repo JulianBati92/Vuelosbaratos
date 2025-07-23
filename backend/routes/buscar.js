@@ -14,8 +14,8 @@ router.post('/', async (req, res) => {
       resultados = resultados.filter(
         (r) => typeof r.precio === 'number' && r.precio <= precioMax
       );
+      resultados.sort((a, b) => (a.precio || Infinity) - (b.precio || Infinity));
     }
-    resultados.sort((a, b) => (a.precio || Infinity) - (b.precio || Infinity));
 
     res.json({ filtro: { consulta, precioMax }, resultados });
   } catch (err) {
@@ -25,3 +25,4 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+

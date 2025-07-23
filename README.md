@@ -1,54 +1,60 @@
-# VuelosBaratos
-
+VuelosBaratos
 Aplicación simple para buscar ofertas de vuelos y paquetes. Incluye un backend Node.js con scrapers de ejemplo y un frontend React con Tailwind.
 
-## Requisitos
-- Node.js 16+
+Requisitos
+Node.js 16+
 
-## Instalación
-```bash
+Instalación
+bash
+Copiar
+Editar
 # Instala todas las dependencias (frontend y backend)
 npm install
-```
+Desarrollo
+Para ejecutar en modo desarrollo es necesario correr el backend y el frontend por separado:
 
-## Desarrollo
-Para ejecutar en modo desarrollo es necesario correr el backend y el frontend por separado.
-
-```bash
+bash
+Copiar
+Editar
 # Iniciar backend
 cd backend
 npm start
-
+bash
+Copiar
+Editar
 # En otra terminal iniciar frontend
 cd frontend
 npm run dev
-```
+El frontend está configurado para hacer proxy de /api hacia http://localhost:4000.
 
-El frontend está configurado para proxy `/api` hacia `http://localhost:4000`.
+Ejecución en producción
+Ejecutá el siguiente comando para compilar el frontend y arrancar el backend en modo producción:
 
-## Ejecución en producción
-
-Ejecuta `npm start`. Este comando compila el frontend y a continuación arranca
-el backend en modo producción:
-
-```bash
+bash
+Copiar
+Editar
 npm start
-```
+Si ya tenés el frontend compilado y solo querés iniciar el servidor:
 
-Si ya tienes el frontend compilado y solo quieres iniciar el servidor puedes usar:
-
-```bash
+bash
+Copiar
+Editar
 npm run start:prod
-```
+Despliegue en Vercel
+Vercel usará el archivo vercel.json para construir el frontend con Vite y las funciones de la carpeta api.
 
-## Despliegue en Vercel
-Vercel usará el archivo `vercel.json` para construir el frontend con Vite y las
-funciones de la carpeta `api`. Ejecuta `npm install` y luego `npm run build` para
-generar `frontend/dist`. El backend será accesible bajo `/api` y cualquier otra
-ruta mostrará `index.html` gracias a la regla `/.*` ➜ `/index.html`.
+Pasos:
 
-## Compilar
-```bash
+bash
+Copiar
+Editar
+npm install
+npm run build
+Esto generará la carpeta frontend/dist. El backend quedará accesible bajo /api y cualquier otra ruta servirá index.html gracias a la regla /.* ➜ /index.html.
+
+Compilar
+bash
+Copiar
+Editar
 cd frontend
 npm run build
-```

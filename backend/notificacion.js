@@ -1,30 +1,17 @@
 const twilio = require('twilio');
 
-/**
- * Devuelve una instancia del cliente de Twilio si hay credenciales.
- * Si faltan variables de entorno se devuelve null y los mensajes se loggean.
- */
-function crearCliente() {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  if (!accountSid || !authToken) {
-    console.warn('Twilio no configurado: falta TWILIO_ACCOUNT_SID o TWILIO_AUTH_TOKEN');
-    return null;
-  }
-  return twilio(accountSid, authToken);
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+if (!accountSid || !authToken) {
+  console.warn('Twilio no configurado: falta TWILIO_ACCOUNT_SID o TWILIO_AUTH_TOKEN');
 }
+const client = accountSid && authToken ? new twilio(accountSid, authToken) : null;
 
-const client = crearCliente();
-
-// desde: número de Twilio habilitado para WhatsApp
-const desde = process.env.TWILIO_FROM || 'whatsapp:+14155238886';
-const a = process.env.TWILIO_TO; // Tu número real (whatsapp:+...)
+const desde = 'whatsapp:+14155238886';
+const a = 'whatsapp:+541160505888';
 
 exports.enviarNotificacion = async (mensaje) => {
-  if (!client || !a) {
-    console.log('Notificación:', mensaje);
-    return;
-  }
+  if (!client) return;
   try {
     await client.messages.create({
       from: desde,
@@ -36,3 +23,4 @@ exports.enviarNotificacion = async (mensaje) => {
     console.error('❌ Error al enviar WhatsApp:', error.message);
   }
 };
+

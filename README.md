@@ -28,10 +28,17 @@ El frontend está configurado para proxy `/api` hacia `http://localhost:4000`.
 
 ## Ejecución en producción
 
-Compila el frontend y luego inicia el servidor con Node en modo producción:
+Ejecuta `npm start`. Este comando compila el frontend y a continuación arranca
+el backend en modo producción:
 
 ```bash
-npm run start:build
+npm start
+```
+
+Si ya tienes el frontend compilado y solo quieres iniciar el servidor puedes usar:
+
+```bash
+npm run start:prod
 ```
 
 ## Despliegue en Vercel

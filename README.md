@@ -44,7 +44,8 @@ npm run start:prod
 ## Despliegue en Vercel
 Vercel usará el archivo `vercel.json` para construir el frontend con Vite y las
 funciones de la carpeta `api`. Ejecuta `npm install` y luego `npm run build` para
-generar `frontend/dist`. El backend será accesible bajo `/api`.
+generar `frontend/dist`. El backend será accesible bajo `/api` y cualquier otra
+ruta mostrará `index.html` gracias a la regla `/.*` ➜ `/index.html`.
 
 ## Compilar
 ```bash

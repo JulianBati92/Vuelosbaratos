@@ -7,12 +7,7 @@ Aplicación simple para buscar ofertas de vuelos y paquetes. Incluye un backend 
 
 ## Instalación
 ```bash
-# Backend
-cd backend
-npm install
 
-# Frontend
-cd ../frontend
 npm install
 ```
 
@@ -30,6 +25,7 @@ npm run dev
 ```
 
 El frontend está configurado para proxy `/api` hacia `http://localhost:4000`.
+
 
 ## Compilar
 ```bash

@@ -1,0 +1,9 @@
+{
+  "name": "vuelosbaratos",
+  "private": true,
+  "workspaces": ["frontend", "backend"],
+  "scripts": {
+    "build": "npm --workspace frontend run build",
+    "start": "node backend/index.js"
+  }
+}

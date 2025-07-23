@@ -7,7 +7,7 @@ Aplicación simple para buscar ofertas de vuelos y paquetes. Incluye un backend 
 
 ## Instalación
 ```bash
-# Instala todas las dependencias (frontend y backend)
+
 npm install
 ```
 
@@ -26,10 +26,6 @@ npm run dev
 
 El frontend está configurado para proxy `/api` hacia `http://localhost:4000`.
 
-## Despliegue en Vercel
-Vercel usará el archivo `vercel.json` para construir el frontend con Vite y las
-funciones de la carpeta `api`. Ejecuta `npm install` y luego `npm run build` para
-generar `frontend/dist`. El backend será accesible bajo `/api`.
 
 ## Compilar
 ```bash

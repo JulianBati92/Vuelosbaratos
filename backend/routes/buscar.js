@@ -11,9 +11,10 @@ router.post('/', async (req, res) => {
 
     let resultados = await ejecutarScrapers(consulta);
     if (precioMax) {
-      resultados = resultados.filter(r =>
-        typeof r.precio === 'number' && r.precio <= precioMax
+      resultados = resultados.filter(
+        (r) => typeof r.precio === 'number' && r.precio <= precioMax
       );
+      resultados.sort((a, b) => (a.precio || Infinity) - (b.precio || Infinity));
     }
 
     res.json({ filtro: { consulta, precioMax }, resultados });
@@ -24,3 +25,4 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+

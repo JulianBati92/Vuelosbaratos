@@ -3,8 +3,15 @@
  * Retorna un objeto con la consulta original y el precio detectado.
  */
 function interpret(consulta) {
-  const priceMatch = consulta.match(/(\d+)/);
-  const precioMax = priceMatch ? parseInt(priceMatch[1] || priceMatch[0], 10) : null;
+  const match = consulta.match(/(\d[\d.,]*)\s*(k|mil)?/i);
+  let precioMax = null;
+  if (match) {
+    let numero = match[1].replace(/[.,]/g, '');
+    precioMax = parseInt(numero, 10);
+    if (match[2]) {
+      precioMax *= 1000;
+    }
+  }
   return { consulta, precioMax };
 }
 

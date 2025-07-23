@@ -1,14 +1,13 @@
 const express = require('express');
-const ejecutarScrapers = require('../scrapers');
-const { interpret } = require('../ai/interpreter');
+const ejecutarScrapers = require('../scrapers'); // este módulo debe existir
+const { interpret } = require('../ai/interpreter'); // este también debe existir
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
   try {
     const { consulta = '' } = req.body || {};
-    const { precioMax } = interpret(consulta);
-
+    const { precioMax } = interpret(consulta); // IA que extrae el precio si hay
     let resultados = await ejecutarScrapers(consulta);
     if (precioMax) {
       resultados = resultados.filter(

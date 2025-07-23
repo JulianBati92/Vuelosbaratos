@@ -1,14 +1,8 @@
-const almundo = require('./almundo');
-const kayak = require('./kayak');
-const turismocity = require('./turismocity');
-
-async function ejecutarTodos(consulta) {
-  const resultados = await Promise.all([
-    almundo(consulta),
-    kayak(consulta),
-    turismocity(consulta),
-  ]);
-  return resultados.flat();
-}
-
-module.exports = ejecutarTodos;
+module.exports = async function ejecutarScrapers(consulta) {
+  // 🧑‍🧪 Acá podrías conectar a Skyscanner, Expedia, o hacer scraping real
+  return [
+    { nombre: 'Vuelo a Madrid', precio: 280 },
+    { nombre: 'Vuelo a Barcelona', precio: 350 },
+    { nombre: 'Vuelo a Roma', precio: 420 }
+  ];
+};

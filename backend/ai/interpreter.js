@@ -1,18 +1,7 @@
-/**
- * Extrae un precio máximo simple desde la consulta.
- * Retorna un objeto con la consulta original y el precio detectado.
- */
-function interpret(consulta) {
-  const match = consulta.match(/(\d[\d.,]*)\s*(k|mil)?/i);
-  let precioMax = null;
+exports.interpret = function (texto) {
+  const match = texto.match(/(menor a|menos de)\s*(\d+)/i);
   if (match) {
-    let numero = match[1].replace(/[.,]/g, '');
-    precioMax = parseInt(numero, 10);
-    if (match[2]) {
-      precioMax *= 1000;
-    }
+    return { precioMax: parseInt(match[2], 10) };
   }
-  return { consulta, precioMax };
-}
-
-module.exports = { interpret };
+  return { precioMax: null };
+};

@@ -1,0 +1,10 @@
+{
+  "name": "vuelosbaratos",
+  "private": true,
+  "workspaces": ["frontend", "backend"],
+  "scripts": {
+    "build": "npm --workspace frontend run build",
+    "start": "npm run build && NODE_ENV=production node backend/index.js",
+    "start:prod": "NODE_ENV=production node backend/index.js"
+  }
+}

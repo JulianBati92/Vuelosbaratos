@@ -3,12 +3,15 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const axios = require('axios')
-const { Configuration, OpenAIApi } = require('openai')
+const OpenAI = require('openai')
 const twilio = require('twilio')
 
-const openai = new OpenAIApi(new Configuration({
-  apiKey: process.env.OPENAI_API_KEY
-}))
+let openai = null
+if (process.env.OPENAI_API_KEY) {
+  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+} else {
+  console.warn('OpenAI API key not configured; IA features disabled')
+}
 
 const whatsappClient = twilio(
   process.env.TWILIO_ACCOUNT_SID,
@@ -25,13 +28,16 @@ app.get('/', (req, res) => res.send('API running'))
 app.post('/api/search', async (req, res) => {
   try {
     const { origin, destination, date } = req.body
+    if (!openai) {
+      return res.status(500).json({ ok: false, error: 'OpenAI API key not configured' })
+    }
     const prompt = `Convierte estos en códigos IATA: origen ${origin}, destino ${destination}, fecha ${date}.`
-    const ia = await openai.createCompletion({
+    const ia = await openai.completions.create({
       model: 'text-davinci-003',
       prompt,
       max_tokens: 50
     })
-    const [origCode, destCode] = ia.data.choices[0].text.trim().split(/\s+/)
+    const [origCode, destCode] = ia.choices[0].text.trim().split(/\s+/)
 
     const flights = await axios.get('https://tequila-api.kiwi.com/v2/search', {
       params: {

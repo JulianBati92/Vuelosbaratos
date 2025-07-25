@@ -10,7 +10,7 @@ git checkout main
 git reset --hard origin/main
 
 # 1) frontend/vite.config.js
-cat > frontend/vite.config.js << 'EOF2'
+cat > frontend/vite.config.js <<'EOV'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -27,16 +27,16 @@ export default defineConfig({
     }
   }
 })
-EOF2
+EOV
 
 # 2) frontend/.env.development
-cat > frontend/.env.development << 'EOF2'
+cat > frontend/.env.development <<'EOV'
 VITE_API_URL=http://localhost:4000/api
-EOF2
+EOV
 
 # 3) frontend/src/services/api.js
 mkdir -p frontend/src/services
-cat > frontend/src/services/api.js << 'EOF2'
+cat > frontend/src/services/api.js <<'EOV'
 const API_URL = import.meta.env.VITE_API_URL
 
 /**
@@ -55,11 +55,11 @@ export async function searchFlights({ origin, destination, date }) {
   }
   return res.json()
 }
-EOF2
+EOV
 
 # 4) backend/src/index.js
 mkdir -p backend/src
-cat > backend/src/index.js << 'EOF2'
+cat > backend/src/index.js <<'EOV'
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
@@ -121,7 +121,7 @@ app.post('/api/search', async (req, res) => {
     // 4) WhatsApp
     await whatsappClient.messages.create({
       from: process.env.TWILIO_FROM,  # 'whatsapp:+14155238886'
-      to:   process.env.TWILIO_TO,    # 'whatsapp:+549XXXXXXXXX'
+      to: process.env.TWILIO_TO,      # 'whatsapp:+549XXXXXXXXX'
       body: `✈️ Ofertas de vuelos:\n${offersText}`
     })
 
@@ -134,10 +134,15 @@ app.post('/api/search', async (req, res) => {
 
 const PORT = process.env.PORT || 4000
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
-EOF2
-
+EOV
 
 # 5) Commit & push
 git add frontend/vite.config.js frontend/.env.development frontend/src/services/api.js backend/src/index.js
 git commit -m "feat: proxy front, IA y WhatsApp en backend"
-git push origin main
+
+if git remote get-url origin >/dev/null 2>&1; then
+  git push origin main
+else
+  echo "Remote 'origin' is not configured" >&2
+  exit 1
+fi

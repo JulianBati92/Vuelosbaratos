@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import Resultados from './Resultados';
-import { searchFlights } from '../api'; // Ajustá la ruta si es necesario
+import { searchFlights } from '../api';
 
 export default function Buscador() {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [resultados, setResultados] = useState(null);
+  const [summary, setSummary] = useState(null);
+  const [resolvedCodes, setResolvedCodes] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -15,9 +17,19 @@ export default function Buscador() {
     setLoading(true);
     setError(null);
     setResultados(null);
+    setSummary(null);
+    setResolvedCodes(null);
     try {
       const data = await searchFlights({ origin, destination, date });
+      if (!data.ok) {
+        throw new Error(data.error || 'Error al buscar vuelos');
+      }
       setResultados(data.offers || []);
+      setSummary(data.summary || null);
+      setResolvedCodes({
+        origin: data.origin || { term: origin },
+        destination: data.destination || { term: destination }
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -60,7 +72,18 @@ export default function Buscador() {
         </button>
       </form>
       {error && <p className="text-red-600 mt-2">{error}</p>}
-      {resultados && <Resultados data={resultados} />}
+      {summary && (
+        <div className="mt-4 p-3 border-l-4 border-blue-500 bg-blue-50 text-sm text-blue-900">
+          {summary}
+        </div>
+      )}
+      {resolvedCodes && (
+        <p className="mt-4 text-sm text-gray-600">
+          Búsqueda: {resolvedCodes.origin?.term} ({resolvedCodes.origin?.code}) →{' '}
+          {resolvedCodes.destination?.term} ({resolvedCodes.destination?.code})
+        </p>
+      )}
+      {resultados && <Resultados vuelos={resultados} />}
     </>
   );
 }

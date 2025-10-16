@@ -3,26 +3,18 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const axios = require('axios')
+const OpenAI = require('openai')
 const twilio = require('twilio')
-
-let OpenAI = null
-try {
-  // Optional dependency that may not work on older Node runtimes.
-  OpenAI = require('openai')
-} catch (error) {
-  console.warn('OpenAI SDK not available; IA features disabled', error.message)
-}
 
 const openaiApiKey = process.env.OPENAI_API_KEY
 let openai = null
-if (OpenAI && openaiApiKey) {
-  try {
-    openai = new OpenAI({ apiKey: openaiApiKey })
-    console.log('OpenAI client initialised')
-  } catch (error) {
-    console.warn('Failed to initialise OpenAI client; IA features disabled', error.message)
-  }
-} else if (!openaiApiKey) {
+if (openaiApiKey) {
+  openai = new OpenAI({ apiKey: openaiApiKey })
+  console.log('OpenAI client initialised')
+let openai = null
+if (process.env.OPENAI_API_KEY) {
+  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+} else {
   console.warn('OpenAI API key not configured; IA features disabled')
 }
 
@@ -182,6 +174,16 @@ app.post('/api/search', async (req, res) => {
     if (!originCode || !destinationCode) {
       return res.status(404).json({ ok: false, error: 'No encontramos aeropuertos para la búsqueda' })
     }
+    if (!openai) {
+      return res.status(500).json({ ok: false, error: 'OpenAI API key not configured' })
+    }
+    const prompt = `Convierte estos en códigos IATA: origen ${origin}, destino ${destination}, fecha ${date}.`
+    const ia = await openai.completions.create({
+      model: 'text-davinci-003',
+      prompt,
+      max_tokens: 50
+    })
+    const [origCode, destCode] = ia.choices[0].text.trim().split(/\s+/)
 
     const flights = await axios.get('https://tequila-api.kiwi.com/v2/search', {
       params: {

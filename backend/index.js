@@ -11,6 +11,9 @@ let openai = null
 if (openaiApiKey) {
   openai = new OpenAI({ apiKey: openaiApiKey })
   console.log('OpenAI client initialised')
+let openai = null
+if (process.env.OPENAI_API_KEY) {
+  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 } else {
   console.warn('OpenAI API key not configured; IA features disabled')
 }
@@ -171,6 +174,16 @@ app.post('/api/search', async (req, res) => {
     if (!originCode || !destinationCode) {
       return res.status(404).json({ ok: false, error: 'No encontramos aeropuertos para la búsqueda' })
     }
+    if (!openai) {
+      return res.status(500).json({ ok: false, error: 'OpenAI API key not configured' })
+    }
+    const prompt = `Convierte estos en códigos IATA: origen ${origin}, destino ${destination}, fecha ${date}.`
+    const ia = await openai.completions.create({
+      model: 'text-davinci-003',
+      prompt,
+      max_tokens: 50
+    })
+    const [origCode, destCode] = ia.choices[0].text.trim().split(/\s+/)
 
     const flights = await axios.get('https://tequila-api.kiwi.com/v2/search', {
       params: {
